@@ -1,7 +1,36 @@
-//
-// Created by akhte on 4/3/2025.
-//
-#include "SortingSystem.h"
+
+#include <iostream>
+using namespace std;
+
+
+template <typename T>
+class SortingSystem {
+private:
+    T* data;  // Dynamic array for storing input data
+    int size; // Size of the array
+
+public:
+    SortingSystem(int n);  // Constructor
+    ~SortingSystem();      // Destructor
+
+    void insertionSort();   // (1) Insertion Sort
+    void selectionSort();   // (2) Selection Sort
+    void bubbleSort();      // (3) Bubble Sort
+    void shellSort();       // (4) Shell Sort
+    void mergeSort(int left, int right);  // (5) Merge Sort
+    void quickSort(int left, int right);  // (6) Quick Sort
+    void countSort();       // (7) Count Sort (Only for int)
+    void radixSort();       // (8) Radix Sort (Only for int)
+    void bucketSort();      // (9) Bucket Sort
+    void merge(int left, int mid, int right);  // Merge Sort Helper
+    int partition(int low, int high);         // Quick Sort Helper
+
+    void displayData();  // Print the current state of the array
+    void measureSortTime(void (SortingSystem::*sortFunc)()); // Measure sorting time
+
+    void showMenu();  // Display menu for user interaction
+    void display();
+};
 
 // Constructor
 template <typename T>
@@ -28,7 +57,11 @@ void SortingSystem<T>::insertionSort() {
            j = j - 1;
        }
        data[j + 1] = key;
+       cout << "Iter " << i << " : " ;
+       this->display();
    }
+    cout << "sorted data : ";
+    this->display();
 }
 
 template <typename T>
@@ -39,8 +72,14 @@ void SortingSystem<T>::selectionSort() {
            if (data[j] < data[minIndex])
                minIndex = j;
        }
-       swap(&data[i], &data[minIndex]);
+       T temp = data[minIndex];
+       data[minIndex] = data[i];
+       data[i] = temp;
+       cout << "Iter " << i + 1  << " : " ;
+       this->display();
    }
+    cout << "sorted data : ";
+    this->display();
 }
 
 template <typename T>
@@ -99,17 +138,22 @@ template <typename T>
 void SortingSystem<T>::measureSortTime(void (SortingSystem::*sortFunc)()) {
     // TODO: Implement sorting time measurement
 }
+template<typename T>
+void SortingSystem<T>::display() {
+    cout << "[";
+    for (int i = 0 ; i < size ; i++)
+        cout << " " << data[i] << ", "[i == size - 1  ];
+    cout << "]" << endl;
+}
 
 template <typename T>
 void SortingSystem<T>::showMenu() {
     while (true) {
-        int n;
-        cout << "Enter the number of items to sort:";
-        cin >> n;
-        string data_test[n];
+        const int n = this->size ;
         for (int i = 0; i < n; i++) {
             cout << "Enter data " << i + 1 << ":";
-            cin >> data_test[i];
+            T ele ; cin >> ele;
+            data[i] = ele;
         }
         int choice;
         cout<<"Select a sorting algorithm:\n";
@@ -177,3 +221,38 @@ void SortingSystem<T>::showMenu() {
         }
     }}
 
+
+
+
+int main()
+{
+
+        int type ;
+        cout << "Enter type of data :\n";
+        cout << "1 - string\n";
+        cout << "2 - integer\n";
+        cout << "3 - float\n";
+        cout << "4 - character\n";
+        cin >> type;
+        cout << "enter size of data : " << '\n';
+        int size ;
+        cin >> size;
+        if (type == 1) {
+            SortingSystem<string>sys(size);
+            sys.showMenu();
+        }
+        else if (type == 2) {
+            SortingSystem<int>sys(size);
+            sys.showMenu();
+        }
+        else if (type == 3) {
+            SortingSystem<float>sys(size);
+            sys.showMenu();
+        }
+        else if (type == 4) {
+            SortingSystem<char>sys(size);
+            sys.showMenu();
+        }
+
+    return 0;
+}
