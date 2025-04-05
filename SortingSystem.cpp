@@ -20,12 +20,27 @@ SortingSystem<T>::~SortingSystem() {
 
 template <typename T>
 void SortingSystem<T>::insertionSort() {
-    // TODO: Implement Insertion Sort
+   for (int i = 1 ; i < size ; i++) {
+       T key = data[i];
+       int j = i - 1;
+       while (j >= 0 && data[j] > key) {
+           data[j + 1] = data[j];
+           j = j - 1;
+       }
+       data[j + 1] = key;
+   }
 }
 
 template <typename T>
 void SortingSystem<T>::selectionSort() {
-    // TODO: Implement Selection Sort
+   for (int i = 0 ; i < size - 1 ; i++) {
+       int minIndex = i;
+       for (int j = i + 1 ; j < size ; j++) {
+           if (data[j] < data[minIndex])
+               minIndex = j;
+       }
+       swap(&data[i], &data[minIndex]);
+   }
 }
 
 template <typename T>
