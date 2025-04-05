@@ -127,10 +127,10 @@ void SortingSystem<T>::showMenu() {
             cin>>choice;
             switch (choice) {
                 case 1:
-                    //insertionSort();
+                    insertionSort();
                         break;
                 case 2:
-                    //selectionSort();
+                    selectionSort();
                         break;
                 case 3:
                     //bubbleSort();
