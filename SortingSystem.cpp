@@ -94,7 +94,21 @@ void SortingSystem<T>::shellSort() {
 
 template <typename T>
 void SortingSystem<T>::mergeSort(int left, int right) {
-    // TODO: Implement Merge Sort
+    if (left == right)
+        return;
+    int mid = (left + right) / 2;
+    mergeSort(left, mid);
+    mergeSort(mid + 1, right);
+    merge(left, mid, right);
+
+    cout << "Array after merge: [";
+    for (int i = 0; i < size; ++i) {
+        cout << data[i];
+        if (i < size - 1)
+            cout << ", ";
+        else
+            cout << "]\n\n";
+    }
 }
 
 template <typename T>
@@ -120,7 +134,50 @@ void SortingSystem<T>::bucketSort() {
 // Helper functions (TODO: Implement them)
 template <typename T>
 void SortingSystem<T>::merge(int left, int mid, int right) {
-    // TODO: Implement Merge Sort Helper
+    int L[mid - left + 1], R[right - mid];
+    for (int k = left; k <= mid; ++k)
+        L[k - left] = data[k];
+    for (int k = mid + 1; k <= right; ++k)
+        R[k - mid - 1] = data[k];
+
+    cout << "Left array: [";
+    for (int i = 0; i < mid - left + 1; ++i) {
+        cout << L[i];
+        if (i < mid - left)
+            cout << ", ";
+        else
+            cout << "]";
+    }
+    cout << " Right array: [";
+    for (int i = 0; i < right - mid; ++i) {
+        cout << R[i];
+        if (i < right - mid - 1)
+            cout << ", ";
+        else
+            cout << "]\n";
+    }
+
+    int i = 0, j = 0;
+    while (i < mid - left + 1 && j < right - mid) {
+        if (L[i] <= R[j]) {
+            data[left + i + j] = L[i];
+            ++i;
+        } else {
+            data[left + i + j] = R[j];
+            ++j;
+        }
+    }
+    while (i < mid - left + 1) data[left + i + j] = L[i], ++i;
+    while (j < right - mid) data[left + i + j] = R[j], ++j;
+
+    cout << "Merged result: [";
+    for (int k = left; k <= right; ++k) {
+        cout << data[k];
+        if (k < right)
+            cout << ", ";
+        else
+            cout << "]\n";
+    }
 }
 
 template <typename T>
