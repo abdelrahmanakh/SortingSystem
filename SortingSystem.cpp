@@ -272,7 +272,6 @@ void SortingSystem<T>::showMenu() {
 
 
 int main() {
-
     int type;
     cout << "Enter type of data :\n";
     cout << "1 - String\n";
