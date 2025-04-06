@@ -54,13 +54,13 @@ SortingSystem<T>::~SortingSystem() {
 template<typename T>
 void SortingSystem<T>::insertionSort() {
     for (int i = 1; i < size; i++) {
-        T key = data[i];
+        T current = data[i];
         int j = i - 1;
-        while (j >= 0 && data[j] > key) {
+        while (j >= 0 && data[j] > current) {
             data[j + 1] = data[j];
             j = j - 1;
         }
-        data[j + 1] = key;
+        data[j + 1] = current;
         cout << "Iter " << i << " : ";
         displayData();
     }
@@ -254,7 +254,67 @@ void SortingSystem<T>::radixSort() {
 
 template<typename T>
 void SortingSystem<T>::bucketSort() {
-    // TODO: Implement Bucket Sort
+    if constexpr (is_same_v<T, int> || is_same_v<T, float>) {
+        int number_of_buckets = 10;
+        T mn = data[0], mx = data[0];
+        for (int i = 1; i < size; ++i) {
+            mn = min(mn, data[i]);
+            mx = max(mx, data[i]);
+        }
+
+        int range = (mx - mn) * 10 / number_of_buckets + 1;
+        T **buckets = new T *[number_of_buckets];
+        int *bucket_size = new int[number_of_buckets];
+
+        for (int i = 0; i < number_of_buckets; ++i) {
+            buckets[i] = new T[size];
+            bucket_size[i] = 0;
+        }
+
+        for (int i = 0; i < size; ++i) {
+            int idx = (data[i] - mn) * 10 / range;
+            buckets[idx][bucket_size[idx]++] = data[i];
+        }
+
+        for (int bucket = 0; bucket < number_of_buckets; ++bucket) {
+            cout << "Current processed bucket number is " << bucket << ":\n";
+            for (int i = 1; i < bucket_size[bucket]; ++i) {
+                T current = buckets[bucket][i];
+                int pos = i - 1;
+                while (pos >= 0 && buckets[bucket][pos] > current) {
+                    buckets[bucket][pos + 1] = buckets[bucket][pos];
+                    --pos;
+                }
+                buckets[bucket][pos + 1] = current;
+                cout << "Iter " << i << " : ";
+                cout << "[";
+                for (int j = 0; j < bucket_size[bucket]; j++)
+                    cout << " " << buckets[bucket][j] << ", "[j == bucket_size[bucket] - 1];
+                cout << "]" << endl;
+            }
+            cout << "Final bucket array " << bucket << " : ";
+            cout << "[";
+            for (int j = 0; j < bucket_size[bucket]; j++)
+                cout << " " << buckets[bucket][j] << ", "[j == bucket_size[bucket] - 1];
+            cout << "]" << "\n\n";
+        }
+
+        int pos = 0;
+        for (int bucket = 0; bucket < number_of_buckets; ++bucket) {
+            for (int i = 0; i < bucket_size[bucket]; ++i)
+                data[pos++] = buckets[bucket][i];
+        }
+
+        for (int i = 0; i < number_of_buckets; ++i)
+            delete[] buckets[i];
+        delete[] buckets;
+        delete[] bucket_size;
+
+        cout << "Sorted Data: ";
+        displayData();
+    }
+    else
+        cout << "Invalid algorithm for this datatype\n";
 }
 
 // Helper functions (TODO: Implement them)
@@ -326,7 +386,7 @@ void SortingSystem<T>::measureSortTime(void (SortingSystem::*sortFunc)()) {
     (this->*sortFunc)();
     const time_point<system_clock> end = system_clock::now();
     auto duration = duration_cast<microseconds>(end - start);
-    cout << fixed << setprecision(5) << "Sorting Time: " << duration.count() / 1000000.0 << "seconds" << endl;
+    cout << fixed << setprecision(5) << "Sorting Time: " << duration.count() / 1000000.0 << " seconds" << endl;
 }
 
 
@@ -380,7 +440,7 @@ void SortingSystem<T>::showMenu() {
                     measureSortTime(&SortingSystem<T>::radixSort);
                     break;
                 case 9:
-                    //bucketSort();
+                    measureSortTime(&SortingSystem<T>::bucketSort);
                     break;
                 default:
                     cout << "Wrong choice, Please Enter your choice (1-9):";
