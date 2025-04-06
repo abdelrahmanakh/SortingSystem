@@ -279,7 +279,7 @@ int main() {
     cout << "3 - Float\n";
     cout << "4 - Character\n";
     cin >> type;
-    cout << "enter size of data : " << '\n';
+    cout << "Enter size of data : " << '\n';
     int size;
     cin >> size;
     if (type == 1) {
