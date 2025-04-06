@@ -20,9 +20,10 @@ public:
     void bubbleSort(); // (3) Bubble Sort
     void shellSort(); // (4) Shell Sort
 
-    void mergeSort(); // (5) Merge Sort
-    void sortRange(int left, int right);
+    void mergeSort();
+    void mergeSort(int left, int right); // (5) Merge Sort
 
+    void quickSort();
     void quickSort(int left, int right); // (6) Quick Sort
 
 
@@ -138,16 +139,16 @@ void SortingSystem<T>::shellSort() {
 
 template<typename T>
 void SortingSystem<T>::mergeSort() {
-    sortRange(0, size - 1);
+    mergeSort(0, size - 1);
 }
 
 template<typename T>
-void SortingSystem<T>::sortRange(int left, int right) {
+void SortingSystem<T>::mergeSort(int left, int right) {
     if (left == right)
         return;
     int mid = (left + right) / 2;
-    sortRange(left, mid);
-    sortRange(mid + 1, right);
+    mergeSort(left, mid);
+    mergeSort(mid + 1, right);
     merge(left, mid, right);
 
     cout << "Array after merge: ";
@@ -157,7 +158,26 @@ void SortingSystem<T>::sortRange(int left, int right) {
 
 template<typename T>
 void SortingSystem<T>::quickSort(int left, int right) {
-    // TODO: Implement Quick Sort
+    if (left < right) {
+        int pivot = partition(left, right);
+
+        cout << "Pivot: " << data[pivot] << " -> [";
+        for (int i = left; i < pivot; i++) {
+            cout << " " << data[i] << ", "[i == pivot - 1];
+        }
+        cout << "] " << data[pivot] << " [";
+        for (int i = pivot + 1; i <= right; i++) {
+            cout << " " << data[i] << ", "[i == right];
+        }
+        cout << "]" << endl;
+
+        quickSort(left, pivot - 1);
+        quickSort(pivot + 1, right);
+    }
+    if (left == 0 && right == size - 1) {
+        cout << "Sorted Data: ";
+        displayData();
+    }
 }
 
 template<typename T>
@@ -284,7 +304,14 @@ void SortingSystem<T>::merge(int left, int mid, int right) {
 
 template<typename T>
 int SortingSystem<T>::partition(int low, int high) {
-    // TODO: Implement Quick Sort Helper
+    T pivot = data[high];
+    int current = low - 1;
+    for (int j = low; j < high; j++) {
+        if (data[j] <= pivot)
+            swap(data[++current], data[j]);
+    }
+    swap(data[current + 1], data[high]);
+    return current + 1;
 }
 
 // Utility functions (TODO: Implement them)
@@ -348,7 +375,7 @@ void SortingSystem<T>::showMenu() {
                     measureSortTime(&SortingSystem<T>::mergeSort);
                     break;
                 case 6:
-                    // quickSort();
+                    measureSortTime(&SortingSystem<T>::quickSort);
                     break;
                 case 7:
                     measureSortTime(&SortingSystem<T>::countSort);
