@@ -10,6 +10,8 @@ class SortingSystem {
 private:
     T *data; // Dynamic array for storing input data
     int size; // Size of the array
+    void mergeSort();
+    void quickSort();
 
 public:
     SortingSystem(int n); // Constructor
@@ -19,16 +21,8 @@ public:
     void selectionSort(); // (2) Selection Sort
     void bubbleSort(); // (3) Bubble Sort
     void shellSort(); // (4) Shell Sort
-
-    void mergeSort();
-
     void mergeSort(int left, int right); // (5) Merge Sort
-
-    void quickSort();
-
     void quickSort(int left, int right); // (6) Quick Sort
-
-
     void countSort(); // (7) Count Sort (Only for int)
     void radixSort(); // (8) Radix Sort (Only for int)
     void bucketSort(); // (9) Bucket Sort
