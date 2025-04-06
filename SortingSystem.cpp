@@ -392,23 +392,22 @@ int main() {
     cout << "2 - Integer\n";
     cout << "3 - Float\n";
     cout << "4 - Character\n";
-    cin >> type;
-    cout << "Enter size of data : " << '\n';
-    int size;
-    cin >> size;
-    if (type == 1) {
-        SortingSystem<string> sys(size);
-        sys.showMenu();
-    } else if (type == 2) {
-        SortingSystem<int> sys(size);
-        sys.showMenu();
-    } else if (type == 3) {
-        SortingSystem<float> sys(size);
-        sys.showMenu();
-    } else if (type == 4) {
-        SortingSystem<char> sys(size);
-        sys.showMenu();
+    while (cin >> type) {
+        cout << "Enter size of data : " << '\n';
+        int size;
+        cin >> size;
+        if (type == 1) {
+            SortingSystem<string> sys(size);
+            sys.showMenu();
+        } else if (type == 2) {
+            SortingSystem<int> sys(size);
+            sys.showMenu();
+        } else if (type == 3) {
+            SortingSystem<float> sys(size);
+            sys.showMenu();
+        } else if (type == 4) {
+            SortingSystem<char> sys(size);
+            sys.showMenu();
+        }
     }
-
-    return 0;
 }
