@@ -21,9 +21,11 @@ public:
     void shellSort(); // (4) Shell Sort
 
     void mergeSort();
+
     void mergeSort(int left, int right); // (5) Merge Sort
 
     void quickSort();
+
     void quickSort(int left, int right); // (6) Quick Sort
 
 
@@ -157,6 +159,11 @@ void SortingSystem<T>::mergeSort(int left, int right) {
 }
 
 template<typename T>
+void SortingSystem<T>::quickSort() {
+    quickSort(0, size - 1);
+}
+
+template<typename T>
 void SortingSystem<T>::quickSort(int left, int right) {
     if (left < right) {
         int pivot = partition(left, right);
@@ -183,31 +190,26 @@ void SortingSystem<T>::quickSort(int left, int right) {
 template<typename T>
 void SortingSystem<T>::countSort() {
     if constexpr (is_same_v<T, int>) {
-        int data2[size];
-        for (int i = 0; i < size; i++)
-            data2[i] = data[i];
-
         int k = 0;
         for (int i = 0; i < size; i++)
-            k = max(k, data2[i] + 1);
+            k = max(k, data[i] + 1);
 
         auto count = new int[k]();
         for (int i = 0; i < size; i++)
-            ++count[data2[i]];
+            ++count[data[i]];
 
         for (int i = 1; i < k; i++)
             count[i] += count[i - 1];
 
         auto tmp = new int[size];
         for (int i = 0; i < size; i++)
-            tmp[i] = data2[i];
+            tmp[i] = data[i];
         for (int i = size - 1; i >= 0; i--) {
-            data2[--count[tmp[i]]] = tmp[i];
+            data[--count[tmp[i]]] = tmp[i];
             cout << "Iter " << size - i << " : ";
             displayData();
         }
         cout << "Sorted Data: ";
-        data = data2;
         displayData();
         delete[] count;
         delete[] tmp;
