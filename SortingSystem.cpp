@@ -11,6 +11,7 @@ private:
     T *data; // Dynamic array for storing input data
     int size; // Size of the array
     void mergeSort();
+
     void quickSort();
 
 public:
@@ -312,8 +313,7 @@ void SortingSystem<T>::bucketSort() {
 
         cout << "Sorted Data: ";
         displayData();
-    }
-    else
+    } else
         cout << "Invalid algorithm for this datatype\n";
 }
 
@@ -392,90 +392,74 @@ void SortingSystem<T>::measureSortTime(void (SortingSystem::*sortFunc)()) {
 
 template<typename T>
 void SortingSystem<T>::showMenu() {
+    const int n = this->size;
+    for (int i = 0; i < n; i++) {
+        cout << "Enter data " << i + 1 << ": ";
+        T ele;
+        cin >> ele;
+        data[i] = ele;
+    }
+    int choice;
+    cout << "Select a sorting algorithm:\n";
+    cout << "1. Insertion Sort\n";
+    cout << "2. Selection Sort\n";
+    cout << "3. Bubble Sort\n";
+    cout << "4. Shell Sort\n";
+    cout << "5. Merge Sort\n";
+    cout << "6. Quick Sort\n";
+    cout << "7. Count Sort\n";
+    cout << "8. Radix Sort\n";
+    cout << "9. Bucket Sort\n";
+    cout << "Enter your choice (1-9): ";
     while (true) {
-        const int n = this->size;
-        for (int i = 0; i < n; i++) {
-            cout << "Enter data " << i + 1 << ": ";
-            T ele;
-            cin >> ele;
-            data[i] = ele;
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                measureSortTime(&SortingSystem<T>::insertionSort);
+                break;
+            case 2:
+                measureSortTime(&SortingSystem<T>::selectionSort);
+                break;
+            case 3:
+                measureSortTime(&SortingSystem<T>::bubbleSort);
+                break;
+            case 4:
+                measureSortTime(&SortingSystem<T>::shellSort);
+                break;
+            case 5:
+                measureSortTime(&SortingSystem<T>::mergeSort);
+                break;
+            case 6:
+                measureSortTime(&SortingSystem<T>::quickSort);
+                break;
+            case 7:
+                measureSortTime(&SortingSystem<T>::countSort);
+                break;
+            case 8:
+                measureSortTime(&SortingSystem<T>::radixSort);
+                break;
+            case 9:
+                measureSortTime(&SortingSystem<T>::bucketSort);
+                break;
+            default:
+                cout << "Wrong choice, Please Enter your choice (1-9):";
+                continue; //wrong input so cin again
         }
-        int choice;
-        cout << "Select a sorting algorithm:\n";
-        cout << "1. Insertion Sort\n";
-        cout << "2. Selection Sort\n";
-        cout << "3. Bubble Sort\n";
-        cout << "4. Shell Sort\n";
-        cout << "5. Merge Sort\n";
-        cout << "6. Quick Sort\n";
-        cout << "7. Count Sort\n";
-        cout << "8. Radix Sort\n";
-        cout << "9. Bucket Sort\n";
-        cout << "Enter your choice (1-9): ";
-        while (true) {
-            cin >> choice;
-            switch (choice) {
-                case 1:
-                    measureSortTime(&SortingSystem<T>::insertionSort);
-                    break;
-                case 2:
-                    measureSortTime(&SortingSystem<T>::selectionSort);
-                    break;
-                case 3:
-                    measureSortTime(&SortingSystem<T>::bubbleSort);
-                    break;
-                case 4:
-                    measureSortTime(&SortingSystem<T>::shellSort);
-                    break;
-                case 5:
-                    measureSortTime(&SortingSystem<T>::mergeSort);
-                    break;
-                case 6:
-                    measureSortTime(&SortingSystem<T>::quickSort);
-                    break;
-                case 7:
-                    measureSortTime(&SortingSystem<T>::countSort);
-                    break;
-                case 8:
-                    measureSortTime(&SortingSystem<T>::radixSort);
-                    break;
-                case 9:
-                    measureSortTime(&SortingSystem<T>::bucketSort);
-                    break;
-                default:
-                    cout << "Wrong choice, Please Enter your choice (1-9):";
-                    continue; //wrong input so cin again
-            }
-            break;
-        }
-        char choice2;
-        cout << "Do you want sort another dataset? (y/n):";
-        while (true) {
-            cin >> choice2;
-            switch (choice2) {
-                case 'y':
-                    break;
-                case 'n':
-                    cout << "Thank you for using the sorting system! Goodbye!";
-                    return;
-                default:
-                    cout << "Wrong choice, Please Enter your choice (y/n):";
-                    continue;
-            }
-            break;
-        }
+        break;
     }
 }
 
 
 int main() {
-    int type;
-    cout << "Enter type of data :\n";
-    cout << "1 - String\n";
-    cout << "2 - Integer\n";
-    cout << "3 - Float\n";
-    cout << "4 - Character\n";
-    while (cin >> type) {
+    freopen("Problem4.txt", "r", stdin);
+    while (true) {
+        int type;
+        cout << "Enter type of data :\n";
+        cout << "1 - String\n";
+        cout << "2 - Integer\n";
+        cout << "3 - Float\n";
+        cout << "4 - Character\n";
+        cin >> type;
         cout << "Enter size of data : " << '\n';
         int size;
         cin >> size;
@@ -492,5 +476,24 @@ int main() {
             SortingSystem<char> sys(size);
             sys.showMenu();
         }
+        char choice;
+        cout << "Do you want sort another dataset? (y/n):";
+        bool cont = false;
+        while (true) {
+            cin >> choice;
+            switch (choice) {
+                case 'y':
+                    cont = true;
+                    break;
+                case 'n':
+                    cout << "Thank you for using the sorting system! Goodbye!";
+                    return 0;
+                default:
+                    cout << "Wrong choice, Please Enter your choice (y/n):";
+            }
+            break;
+        }
+        if (!cont)
+            break;
     }
 }
