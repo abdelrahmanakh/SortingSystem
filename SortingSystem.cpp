@@ -451,7 +451,6 @@ void SortingSystem<T>::showMenu() {
 
 
 int main() {
-    freopen("input.txt", "r", stdin);
     while (true) {
         int type;
         cout << "Enter type of data :\n";
